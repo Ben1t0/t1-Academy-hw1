@@ -4,6 +4,7 @@ package ru.t1academy.java.hw1.service.order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.t1academy.java.hw1.annotation.Exception;
 import ru.t1academy.java.hw1.annotation.Logging;
 import ru.t1academy.java.hw1.dto.order.OrderDto;
 import ru.t1academy.java.hw1.dto.order.OrderMapper;
@@ -43,9 +44,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @Exception
     public ReturnOrderDto addOrder(OrderDto orderDto) {
         User customer = userRepository.findById(orderDto.customerId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User with id %d not found".formatted(orderDto.customerId())));
 
         Order order = Order.builder()
                 .description(orderDto.description())

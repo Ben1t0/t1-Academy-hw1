@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    @Logging
     public List<ReturnUserDto> getAll() {
         return userRepository.findAll().stream().map(userMapper::toDto).toList();
     }
@@ -60,7 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Logging
     public void deleteUser(long userId) {
-        userRepository.findById(userId);
+        userRepository.deleteById(userId);
     }
 }

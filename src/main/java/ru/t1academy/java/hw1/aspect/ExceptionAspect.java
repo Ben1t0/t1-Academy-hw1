@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Order(2)
+@Order(3)
 @Slf4j
 public class ExceptionAspect {
 
@@ -22,6 +22,6 @@ public class ExceptionAspect {
     public void afterThrowingAdvice(JoinPoint jp, Exception ex) {
         String methodName = jp.getSignature().getName();
 
-        log.error("Method {} throws exception {}", methodName, ex.getMessage());
+        log.error("Method {} throws exception: {}", methodName, ex.getMessage());
     }
 }

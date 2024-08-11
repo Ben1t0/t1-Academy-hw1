@@ -1,12 +1,11 @@
 package ru.t1academy.java.hw1.aspect;
 
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,26 +16,25 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.t1academy.java.hw1.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
-class LoggingAspectTest {
-
+class ExceptionAspectTest {
     @Mock
-    private ProceedingJoinPoint joinPoint;
+    private JoinPoint joinPoint;
 
     @Mock
     private Signature signature;
 
-    private final Logger logger = (Logger) LogManager.getLogger(LoggingAspect.class);
+    private final Logger logger = (Logger) LogManager.getLogger(ExceptionAspect.class);
 
     @InjectMocks
-    private LoggingAspect aspect;
+    private ExceptionAspect aspect;
 
     @Mock
     private Appender appender;
@@ -52,15 +50,11 @@ class LoggingAspectTest {
     }
 
     @Test
-    public void successfullyLogging() throws Throwable {
+    public void successfullyLogging() {
         when(joinPoint.getSignature()).thenReturn(signature);
         when(signature.getName()).thenReturn("methodName");
-        when(joinPoint.proceed()).thenReturn("RESULT");
-        when(joinPoint.getArgs()).thenReturn(new String[]{"first arg", "second arg"});
-        aspect.loggingAroundAspect(joinPoint);
-        verify(joinPoint, times(1)).proceed();
-        verifyLogMessages("Called method methodName, with args [first arg, second arg]",
-                "Method methodName execution result RESULT");
+        aspect.afterThrowingAdvice(joinPoint, new NotFoundException("Item not found"));
+        verifyLogMessages("Method methodName throws exception: Item not found");
     }
 
     private void verifyLogMessages(String... messages) {

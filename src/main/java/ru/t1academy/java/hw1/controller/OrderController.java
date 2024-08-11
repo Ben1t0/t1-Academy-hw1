@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.t1academy.java.hw1.annotation.Valid;
 import ru.t1academy.java.hw1.dto.order.OrderDto;
 import ru.t1academy.java.hw1.dto.order.ReturnOrderDto;
 import ru.t1academy.java.hw1.service.order.OrderService;
@@ -33,7 +34,7 @@ public class OrderController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/orders")
-    public ReturnOrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public ReturnOrderDto createOrder(@RequestBody @Valid OrderDto orderDto) {
         return orderService.addOrder(orderDto);
     }
 

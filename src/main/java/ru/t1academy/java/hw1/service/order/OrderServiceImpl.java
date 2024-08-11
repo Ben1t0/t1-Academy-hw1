@@ -1,11 +1,11 @@
-package ru.t1academy.java.hw1.service;
+package ru.t1academy.java.hw1.service.order;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.t1academy.java.hw1.annotation.LoggingAnnotation;
-import ru.t1academy.java.hw1.dto.order.CreateOrderDto;
+import ru.t1academy.java.hw1.annotation.Logging;
+import ru.t1academy.java.hw1.dto.order.OrderDto;
 import ru.t1academy.java.hw1.dto.order.OrderMapper;
 import ru.t1academy.java.hw1.dto.order.ReturnOrderDto;
 import ru.t1academy.java.hw1.exception.NotFoundException;
@@ -18,7 +18,7 @@ import ru.t1academy.java.hw1.repository.UserRepository;
 import java.util.List;
 
 @Service
-@LoggingAnnotation
+@Logging
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
@@ -43,16 +43,41 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public ReturnOrderDto addOrder(CreateOrderDto createOrderDto) {
-        User customer = userRepository.findById(createOrderDto.customerId())
+    public ReturnOrderDto addOrder(OrderDto orderDto) {
+        User customer = userRepository.findById(orderDto.customerId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         Order order = Order.builder()
-                .description(createOrderDto.description())
+                .description(orderDto.description())
                 .status(OrderStatus.NEW)
                 .customer(customer)
                 .build();
 
         return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    @Transactional
+    public ReturnOrderDto updateOrder(long orderId, OrderDto orderDto) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order with id %d not found".formatted(orderId)));
+
+        if (orderDto.description() != null && !orderDto.description().isBlank()) {
+            order.setDescription(orderDto.description());
+        }
+
+        if (orderDto.customerId() != null) {
+            User customer = userRepository.findById(orderDto.customerId())
+                    .orElseThrow(() -> new NotFoundException("User not found"));
+            order.setCustomer(customer);
+        }
+
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrder(long orderId) {
+        orderRepository.deleteById(orderId);
     }
 }

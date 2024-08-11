@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration status="WARN" name="Project name">
+<Configuration status="INFO" name="Project name">
     <Properties>
         <Property name="log-path">logs</Property>
-        <Property name="logfile-name">projectname</Property>
+        <Property name="logfile-name">t1-academy-hw1</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
     </Properties>
@@ -20,9 +20,6 @@
             </Policies>
             <DirectWriteRolloverStrategy/>
         </RollingFile>
-        <!--        <Async name="Async">-->
-        <!--            <AppenderRef ref="RollingFile"/>-->
-        <!--        </Async>-->
     </Appenders>
 
     <Loggers>
@@ -51,7 +48,7 @@
             <AppenderRef ref="RollingFile" level="DEBUG"/>
         </Logger>
         <!--Logger for com.medium package-->
-        <Logger name="ru.t1academy" level="DEBUG" additivity="false">
+        <Logger name="ru.t1academy" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
         </Logger>

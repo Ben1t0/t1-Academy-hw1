@@ -57,6 +57,11 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
         <dependency>
+            <groupId>ru.t1-academy.java</groupId>
+            <artifactId>hw2</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
@@ -71,12 +76,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-       <!-- <dependency>
-            <groupId>com.github.valfirst</groupId>
-            <artifactId>slf4j-test</artifactId>
-            <version>3.0.1</version>
-            <scope>test</scope>
-        </dependency>-->
     </dependencies>
 
     <build>

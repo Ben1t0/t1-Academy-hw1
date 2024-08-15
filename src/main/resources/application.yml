@@ -16,3 +16,7 @@ spring:
   sql:
     init:
       mode: always
+
+web-logging-starter:
+  include: body,headers
+  enabled: true
